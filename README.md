@@ -1,1 +1,28 @@
-# TuffyResell![054b4fa47d9be6269f093c1d54d3c9d](https://user-images.githubusercontent.com/54606160/202177549-95be8569-557a-42ca-a12a-39a19f118f2d.png)
+# TuffyResell
+alembic==1.0.5
+asn1crypto==0.24.0
+cffi==1.11.5
+Click==7.0
+cryptography==2.4.2
+Flask==1.0.2
+Flask-Login==0.4.1
+Flask-Migrate==2.3.1
+Flask-Script==2.0.6
+Flask-SQLAlchemy==2.3.2
+Flask-WTF==0.14.2
+idna==2.8
+itsdangerous==1.1.0
+Jinja2==2.10
+Mako==1.0.7
+MarkupSafe==1.1.0
+pycparser==2.19
+PyMySQL==0.9.2
+python-dateutil==2.7.5
+python-editor==1.0.3
+six==1.12.0
+SQLAlchemy==1.2.14
+Werkzeug==0.14.1
+WTForms==2.2.1
+blinker==1.4
+Flask-Mail==0.9.1
+PyJWT==1.7.1![054b4fa47d9be6269f093c1d54d3c9d](https://user-images.githubusercontent.com/54606160/202177549-95be8569-557a-42ca-a12a-39a19f118f2d.png)
