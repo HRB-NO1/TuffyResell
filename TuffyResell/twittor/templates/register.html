@@ -18,6 +18,7 @@
             <p>
                 {{ form.email.label }}
                 {{ form.email() }}<br>
+            <input id="email" type="email" pattern="[a-z.]*[@]\bfoo.com" required>
                 {% for error in form.email.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}

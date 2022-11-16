@@ -15,10 +15,11 @@
                     {% else %}
                     <span class="badge badge-success">Certified </span>
                     {% endif %}
+                        <br>Email: {{ user.email }}
                     {% endif %}
                 </form>
                 <p>
-                    Follower {{ user.followers.count() }} Following {{ user.followed.count() }}
+                    Follower: {{ user.followers.count() }} Following: {{ user.followed.count() }}
                 </p>
                 <form action="" method="post">
                     {% if user != current_user %}

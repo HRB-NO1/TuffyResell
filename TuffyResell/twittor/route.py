@@ -14,7 +14,7 @@ from twittor.email import send_email
 def index():
     form = TweetForm()
     if form.validate_on_submit():
-        t = Tweet(body=form.tweet.data,item_name=form.item_name.data,price=form.price.data, author=current_user)
+        t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
         db.session.add(t)
         db.session.commit()
         return redirect(url_for('index'))
@@ -126,8 +126,6 @@ def send_email_for_user_activate(user):
 
 
 def user_activate(token):
-    if not current_user.is_authenticated:
-        return redirect(url_for('index'))
     user = User.verify_jwt(token)
     if not user:
         msg = "Token has expired, please try to re-send email"
@@ -223,3 +221,9 @@ def following():
     return render_template(
         'following.html', tweets=tweets.items, next_url=next_url, prev_url=prev_url
     )
+
+
+@login_required
+def post(id):
+    tweet = Tweet.query.get_or_404(id)
+    return render_template('post.html', tweet=tweet)
