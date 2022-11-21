@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Sorry, this page does not exit</h1>
+    <h1>Sorry, this page does not exit</h1>
+    <br>
+    <a class="  float-center text-primary  font-weight-normal"
+       href="{{ url_for('index',username=current_user.username) }}">
+        Redirect to main page</a>
 {% endblock %}

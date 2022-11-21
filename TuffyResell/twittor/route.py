@@ -4,27 +4,27 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from twittor.forms import LoginForm, RegisterForm, EditProfileForm, TweetForm, \
     PasswdResetRequestForm, PasswdResetForm
-from twittor.models.user import User, load_user
+from twittor.models.user import User
 from twittor.models.tweet import Tweet
 from twittor import db
 from twittor.email import send_email
 
+from flask_uploads import UploadSet, IMAGES, configure_uploads
+
+from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 @login_required
 def index():
-    form = TweetForm()
-    if form.validate_on_submit():
-        t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
-        db.session.add(t)
-        db.session.commit()
-        return redirect(url_for('index'))
     page_num = int(request.args.get('page') or 1)
     tweets = Tweet.query.order_by(Tweet.create_time.desc()).paginate(
         page=page_num, per_page=current_app.config['TWEET_PER_PAGE'], error_out=False)
     next_url = url_for('index', page=tweets.next_num) if tweets.has_next else None
     prev_url = url_for('index', page=tweets.prev_num) if tweets.has_prev else None
     return render_template(
-        'index.html', tweets=tweets.items, form=form, next_url=next_url, prev_url=prev_url
+        'index.html', tweets=tweets.items, next_url=next_url, prev_url=prev_url
     )
 
 
@@ -148,9 +148,21 @@ def edit_profile():
     if request.method == 'GET':
         form.about_me.data = current_user.about_me
     if form.validate_on_submit():
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        return redirect(url_for('profile', username=current_user.username))
+            current_user.about_me = form.about_me.data
+
+            pic_filename = form.profile_pic.data
+
+            if pic_filename:
+                current_user.profile_pic = request.files['profile_pic']
+                pic_filename = secure_filename(current_user.profile_pic.filename)
+                pic_name = str(uuid.uuid1()) + "_" + pic_filename
+                saver = request.files['profile_pic']
+                current_user.profile_pic = pic_name
+                saver.save(os.path.join(current_app.config['UPLOAD_FOLDER'], pic_name))
+
+            db.session.commit()
+            flash("Profile updated successfully!")
+            return redirect(url_for('profile', username=current_user.username))
     return render_template('edit_profile.html', form=form)
 
 
@@ -227,3 +239,61 @@ def following():
 def post(id):
     tweet = Tweet.query.get_or_404(id)
     return render_template('post.html', tweet=tweet)
+
+
+@login_required
+def post_item():
+    form = TweetForm()
+    if form.validate_on_submit():
+        t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
+        db.session.add(t)
+        db.session.commit()
+        flash("Item has been posted!")
+        return redirect(url_for('index'))
+    return render_template('post_item.html', form=form)
+
+
+@login_required
+def post_edit(username, id):
+    t = Tweet.query.get_or_404(id)
+    form = TweetForm()
+    if form.validate_on_submit():
+        t.item_name = form.item_name.data
+        t.body = form.tweet.data
+        t.price = form.price.data
+        db.session.add(t)
+        db.session.commit()
+        flash("Post has been updated")
+        return redirect(url_for('profile', username=current_user.username))
+    form.item_name.data = t.item_name
+    form.tweet.data = t.body
+    form.price.data = t.price
+    return render_template("edit_post.html", form=form)
+
+
+@login_required
+def post_delete(username, id):
+    t = Tweet.query.get_or_404(id)
+    try:
+        db.session.delete(t)
+        db.session.commit()
+        flash("Item post was deleted.")
+        return redirect(request.referrer)
+    except:
+        flash("Oops! There is a prolem deleting the item post.")
+        return redirect(request.referrer)
+
+
+@login_required
+def post_mark_sold(username, id):
+    t = Tweet.query.get_or_404(id)
+    try:
+        t.sell_status = 1
+        db.session.commit()
+        flash("Item post was marked as sold.")
+        return redirect(request.referrer)
+    except:
+        flash("Oops! There is a prolem marking the item post.")
+        return redirect(request.referrer)
+
+

@@ -25,6 +25,8 @@ class User(UserMixin, db.Model):
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
     is_activated = db.Column(db.Boolean, default=False)
 
+    profile_pic = db.Column(db.String())
+
     tweets = db.relationship('Tweet', backref='author', lazy='dynamic')
 
     followed = db.relationship(

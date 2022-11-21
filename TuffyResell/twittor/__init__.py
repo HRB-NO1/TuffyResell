@@ -13,7 +13,8 @@ login_manager.login_view = 'login'
 mail = Mail()
 
 from twittor.route import index, login, logout, register, user, page_not_found, \
-    edit_profile, reset_password_request, password_reset, following, user_activate, post
+    edit_profile, reset_password_request, password_reset, following, user_activate, post, post_item, post_edit, \
+    post_delete, post_mark_sold
 
 
 def create_app():
@@ -45,5 +46,13 @@ def create_app():
     app.register_error_handler(404, page_not_found)
     app.add_url_rule('/following', 'following', following)
     app.add_url_rule('/activate/<token>', 'user_activate', user_activate)
-    app.add_url_rule('/post/<id>', 'post', post)
+    app.add_url_rule('/post/<int:id>', 'post', post)
+    app.add_url_rule('/post_item', 'post_item', post_item, methods=['GET', 'POST'])
+    app.add_url_rule('/<username>/edit/<int:id>', 'post_edit', post_edit, methods=['GET', 'POST'])
+    app.add_url_rule('/<username>/delete/<int:id>', 'post_delete', post_delete, methods=['GET', 'POST'])
+    app.add_url_rule('/<username>/post_mark_sold/<int:id>', 'post_mark_sold', post_mark_sold, methods=['GET', 'POST'])
+
+
+
+
     return app

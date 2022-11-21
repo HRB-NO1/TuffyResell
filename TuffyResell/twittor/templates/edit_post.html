@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+
+
+
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <form action="" method="POST">
+                        <a href="{{ url_for('profile', username=current_user.username) }}" class="btn btn-outline-secondary"><-Back To
+                            {{ current_user.username }}</a>
+<br><br>
+            {{ form.hidden_tag() }}
+
+            Product name:
+            {{ form.item_name(cols=50, rows=1, class="form-control") }}
+            <br/>
+
+
+            Price:
+            {{ form.price(cols=10, rows=1,class="form-control") }}
+            <br/>
+
+            Description:
+            {{ form.tweet(cols=10, rows=8,class="form-control") }}
+            <br/>
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Select Pictures</label>
+                <input class="form-control" type="file" id="formFileMultiple" multiple>
+            </div>
+
+            <div class="form-check">
+
+                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                <label class="form-check-label" for="gridCheck1">
+                    I have understood the terms and conditions
+                </label>
+            </div>
+                <br>
+
+            <button class="btn btn-info" type="submit">Update Item</button>
+
+        </form>
+
+
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}
+

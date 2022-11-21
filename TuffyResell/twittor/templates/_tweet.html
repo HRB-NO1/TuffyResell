@@ -1,8 +1,45 @@
-<table class="table table-hover">
-<main class="container">
-  <div class="bg-light p-5 rounded">
-    <h1>{{ tweet.item_name }}</h1>
-    <p class="lead"><b>${{ tweet.price }}<b></p>
-    <p class="h6 text-muted">{{ tweet.body }}</p>
-  </div>
-</main>
+<table class="table">
+    <main class="container">
+        <div class=" p-5 rounded">
+            <h1>
+                {% if tweet.author.is_activated != 1 %}
+                    <span class="badge badge-warning">Uncertified</span>
+                {% else %}
+                    <span class="badge badge-success">Certified</span>
+                {% endif %}
+                {% if tweet.sell_status %}
+                    <span class="badge badge-secondary">Sold</span>
+                {% endif %}
+                {{ tweet.item_name }}
+            </h1>
+
+            {% if tweet.author == current_user %}
+                <div class="d-flex justify-content-between">
+                    <strong class="text-gray-dark "></strong>
+                    <div class='row'>
+                        {% if not tweet.sell_status %}
+                            <a class="  float-right text-primary  font-weight-normal"
+                               href="{{ url_for('post_mark_sold',username=current_user.username, id=tweet.id) }}">
+                                Mark
+                                as
+                                Sold </a>
+                            &nbsp;丨 &nbsp;
+                        {% endif %}
+                        {% if not tweet.sell_status %}
+
+                            <a class="d-flex  float-right text-primary font-weight-normal"
+                               href="{{ url_for('post_edit',username=current_user.username, id=tweet.id) }}"> Edit </a>
+                            &nbsp; 丨&nbsp;
+
+                        {% endif %}
+
+                        <a class="d-flex  float-right text-primary font-weight-normal"
+                           href="{{ url_for('post_delete',username=current_user.username, id=tweet.id) }}"> Delete</a>
+                    </div>
+                </div>
+            {% endif %}
+            <p class="lead"><b>${{ tweet.price }}</b></p>
+            <p class="h6 text-muted">{{ tweet.body }}</p>
+        </div>
+    </main>
+    {#</table>#}

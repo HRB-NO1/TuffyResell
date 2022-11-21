@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
     TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, \
@@ -38,16 +39,18 @@ class RegisterForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=120)])
+    profile_pic = FileField("Profile picture")
+
     submit = SubmitField('Save')
 
 
 class TweetForm(FlaskForm):
     item_name = TextAreaField('Item_name', validators=[DataRequired(), Length(min=0, max=300)]
-                              , render_kw={"placeholder": "Product name..."})
-    tweet = TextAreaField('Tweet', validators=[DataRequired(), Length(min=0, max=1000)]
-                          , render_kw={"placeholder": "Description..."})
+                              , render_kw={"placeholder": ""})
+    tweet = TextAreaField('Tweet', validators=[DataRequired(), Length(min=0, max=5000)]
+                          , render_kw={"placeholder": ""})
     price = TextAreaField('Price', validators=[DataRequired(), Length(min=0, max=20)]
-                          , render_kw={"placeholder": "Price($$$)"})
+                          , render_kw={"placeholder": ""})
 
 
 class PasswdResetRequestForm(FlaskForm):
@@ -66,3 +69,7 @@ class PasswdResetForm(FlaskForm):
     password2 = PasswordField(
         "Password Repeat", validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
+
+
+
+

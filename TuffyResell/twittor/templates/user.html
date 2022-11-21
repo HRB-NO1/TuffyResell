@@ -1,21 +1,43 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
-<table class="table-light">
-    <tr>
-        <td><img src="{{ user.avatar(200) }}" alt=""></td>
-        <td>
-            <p>
+    <table class="table-light">
+        <tr>
+
+            {% if not user.profile_pic %}
+                <td><img src="{{ user.avatar(200) }}" alt=""></td>
+            {% else %}
+                <td><img src="{{ url_for('static',filename='images/' + user.profile_pic) }}" width="200" alt=""></td>
+{#                <td><img src="{{ url_for('static',filename='images/' + user.profile_pic) }}" class="img-fluid"#}
+{#                         alt="Responsive image"></td>#}
+
+            {% endif %}
+
+            <td>
+                <p>
                 <form action="" method="post">
                     <b>{{ user.username }}</b>
                     {% if user == current_user %}
-                    {% if current_user.is_activated != 1 %}
-                    <input id="btn" class="btn btn-warning" type="submit" name="request_button" value="Uncertified">
-                    {% else %}
-                    <span class="badge badge-success">Certified </span>
-                    {% endif %}
+                        {% if current_user.is_activated != 1 %}
+                            <input id="btn" class="btn btn-warning" type="submit" name="request_button"
+                                   value="Uncertified">
+                        {% else %}
+                            <span class="badge badge-success">Certified </span>
+                        {% endif %}
                         <br>Email: {{ user.email }}
+                        {% else %}
+                         {% if user.is_activated != 1 %}
+
+                            <span class="badge badge-warning">UnCertified </span>
+
+                        {% else %}
+                            <span class="badge badge-success">Certified </span>
+                        {% endif %}
+
+
+
                     {% endif %}
                 </form>
                 <p>
@@ -23,35 +45,40 @@
                 </p>
                 <form action="" method="post">
                     {% if user != current_user %}
-                    {% if current_user.is_following(user) %}
-                    <input class="btn btn-outline-primary" type="submit" name="request_button" value="Unfollow">
-                    {% else %}
-                    <input class="btn btn-outline-primary" type="submit" name="request_button" value="Follow">
-                    {% endif %}
+                        {% if current_user.is_following(user) %}
+                            <input class="btn btn-outline-primary" type="submit" name="request_button" value="Unfollow">
+                        {% else %}
+                            <input class="btn btn-outline-primary" type="submit" name="request_button" value="Follow">
+                        {% endif %}
                     {% endif %}
                 </form>
-            </p>
-            {% if user.about_me %}
-            <p>About Me: {{ user.about_me }}</p>
-            {% endif %}
+                </p>
 
-            {% if user.create_time %}
-            <p>Joined: {{ user.create_time }}</p>
-            {% endif %}
-            {% if user==current_user %}
-            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-            {% endif %}
-        </td>
-    </tr>
-</table>
+                {% if user.about_me %}
+                    <p>About Me: {{ user.about_me }}</p>
+                {% endif %}
 
-{% include '_tweets.html' %}
 
-{% if prev_url %}
-<a href="{{ prev_url }}">Prev Page</a>
-{% endif %}
-{% if next_url %}
-<a href="{{ next_url }}">Next Page</a>
-{% endif %}
+
+
+                {% if user.create_time %}
+                    <p>Joined: {{ user.create_time }}</p>
+                {% endif %}
+                {% if user==current_user %}
+                    <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    {% include '_tweets.html' %}
+
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Prev Page</a>
+    {% endif %}
+
+    {% if next_url %}
+        <a href="{{ next_url }}">Next Page</a>
+    {% endif %}
 
 {% endblock %}

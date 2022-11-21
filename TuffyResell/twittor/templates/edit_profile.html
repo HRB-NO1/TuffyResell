@@ -1,21 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class='row'>
-    <div class="text-center col-lg-4"></div>
-    <div class="text-center col-lg-4">
-        <h1>Edit Profile</h1>
-        <form action="" method="post">
+    <div class='row'>
+        <div class="text-center col-lg-4"></div>
+        <div class="text-center col-lg-4">
+            <h1>Edit Profile</h1>
+            <form action="" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <p>
                 {{ form.about_me.label }}<br>
                 {{ form.about_me(cols=50, rows=4) }}<br>
                 {% for error in form.about_me.errors %}
-                <span style="color: red;">[{{ error }}]</span>
+                    <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
+
+
             </p>
+
+
+            {{ form.profile_pic.label(class="form-label") }}
+
+            {{ form.profile_pic(class="form-control", value=form.profile_pic) }}
+
+
             <button class="btn btn-info" type="submit">Save</button>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

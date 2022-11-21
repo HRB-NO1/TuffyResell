@@ -2,36 +2,30 @@
 
 {% block content %}
 
-<div class='row'>
+    <div class='row'>
 
-    <div class="col-lg-4"></div>
-    <div class="col-lg-2">
-    <h2>Hello, <a href="/{{ current_user.username }}">{{ current_user.username }}</a></h2>
+        <div class="col-lg-2">
+            <h2>Hello, <a href="/{{ current_user.username }}">{{ current_user.username }}</a></h2>
+            Chat method coming soon...
+
+        </div>
+        <div class="col-lg-4">
+        </div>
+
     </div>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-            {{ form.item_name(cols=50, rows=1) }}<br>
-            {{ form.tweet(cols=50, rows=4) }}<br>
-            {% for error in form.tweet.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-
-        {{ form.price(cols=10, rows=1) }}<br>
-
-        <button class="btn btn-info" type="submit">Post Item</button>
-    </form>
-</div>
-<div class='row'>
-    <div class="col-lg-4"></div>
-    <div class="col-lg-8">
-    {% include '_tweets.html' %}
-
-    {% if prev_url %}
-    < a href="{{ prev_url }}">Prev Page</ a>
-    {% endif %}
-    {% if next_url %}
-    < a href="{{ next_url }}">Next Page</ a>
-    {% endif %}
+    <div class='row'>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9 text-primary">
+            {% include '_tweets.html' %}
+            {% if prev_url %}
+                <a href="{{ prev_url }}">Prev Page </a>
+            {% endif %}
+        {% if prev_url and next_url %}
+            |
+        {% endif %}
+            {% if next_url %}
+                <a href="{{ next_url }}">Next Page</a>
+            {% endif %}
+        </div>
     </div>
-</div>
 {% endblock %}
