@@ -12,6 +12,8 @@ class Tweet(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     sell_status = db.Column(db.Boolean, default=False)
 
+    item_pic = db.Column(db.String())
+
     def __repr__(self):
         return "id={}, body={}, create_time={}, user_id={}".format(
             self.id, self.body, self.create_time, self.user_id

@@ -8,8 +8,13 @@
         {% else %}
             <td><img src="{{ url_for('static',filename='images/' + tweet.author.profile_pic) }}" width="75" alt=""></td>
         {% endif %}
-        <a href="{{ url_for('profile', username=tweet.author.username) }}">{{ tweet.author.username }}</a>
 
+        <a href="{{ url_for('profile', username=tweet.author.username) }}">{{ tweet.author.username }}</a>
+                {% if tweet.author.is_activated != 1 %}
+                    <span class="badge badge-warning">Uncertified</span>
+                {% else %}
+                    <span class="badge badge-success">Certified</span>
+                {% endif %}
         {{ tweet.create_time }}
         {% include '_tweet.html' %}
     </main>

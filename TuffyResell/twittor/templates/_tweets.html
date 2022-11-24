@@ -1,18 +1,25 @@
 <table class="table ">
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+
+        <label class="custom-control-label" for="customSwitch1">Available item only</label>
+    </div>
+
     {% for tweet in tweets %}
         <tr valign="top">
             <td class="col-md-8 align-left">
 
                 <h6 class="fw-semibold mb-0 d-flex justify-content-between clickable">
+
                     <a href="{{ url_for('post', id=tweet.id) }}">
                         {% if tweet.sell_status %}
                             <span class="badge badge-secondary">Sold</span>
                         {% endif %}
-                        {% if tweet.author.is_activated != 1 %}
-                            <span class="badge badge-warning">Uncertified</span>
-                        {% else %}
-                            <span class="badge badge-success">Certified</span>
+                        {% if tweet.item_pic %}
+                            <span class="badge badge-info">Pictures</span>
                         {% endif %}
+
+
                         {{ tweet.item_name }}
                     </a>
                     {% if tweet.author == current_user %}
@@ -42,15 +49,18 @@
                 </h6>
 
 
-                <p class="text-muted">${{ tweet.price }}<br>
+                    <p class=" font-weight-normal h5 text-muted ">${{ tweet.price }}
+
+            <br>
+                <h class="h6 font-weight-light">
                     {% if tweet.body|length > 200 %}
                         {{ tweet.body[:200] }}...
                         {#              {{ tweet.body[:10] }}#}
                     {% else %}
                         {{ tweet.body }}
                     {% endif %}
-
-                    </div>
+                </h>
+                </div>
                 </p>
 
                 </p>
@@ -58,8 +68,11 @@
                     {#                    <img src="{{ tweet.author.avatar(15) }}" alt="">#}
 
                     <a href="{{ url_for('profile', username=tweet.author.username) }}">{{ tweet.author.username }}</a>
-
-
+                    {% if tweet.author.is_activated != 1 %}
+                        <span class="badge badge-warning">Uncertified</span>
+                    {% else %}
+                        <span class="badge badge-success">Certified</span>
+                    {% endif %}
                     {{ tweet.create_time }}
                 </div>
                 </p>

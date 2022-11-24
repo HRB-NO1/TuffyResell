@@ -52,7 +52,4 @@ def create_app():
     app.add_url_rule('/<username>/delete/<int:id>', 'post_delete', post_delete, methods=['GET', 'POST'])
     app.add_url_rule('/<username>/post_mark_sold/<int:id>', 'post_mark_sold', post_mark_sold, methods=['GET', 'POST'])
 
-
-
-
     return app

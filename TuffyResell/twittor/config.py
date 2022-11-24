@@ -6,7 +6,9 @@ config_path = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(config_path, 'TuffyResell.db'))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = 'twittor/static/images'
+    UPLOAD_FOLDER_AVATAR = 'twittor/static/images/avatar'
+    UPLOAD_FOLDER_ITEM_PIC = 'twittor/static/images/item_pic'
+
     SECRET_KEY = 'abc123'
     TWEET_PER_PAGE = 8
 
@@ -18,5 +20,3 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'efafmlgfbplercbr')
     MAIL_SUBJECT_RESET_PASSWORD = '[TuffyResell] Please Reset Your Password'
     MAIN_SUBJECT_USER_ACTIVATE = '[TuffyResell] Please Activate Your Accout'
-
-    # UPLOAD_FOLDER = 'static/images/'

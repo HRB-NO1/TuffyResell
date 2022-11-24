@@ -2,14 +2,15 @@
     <main class="container">
         <div class=" p-5 rounded">
             <h1>
-                {% if tweet.author.is_activated != 1 %}
-                    <span class="badge badge-warning">Uncertified</span>
-                {% else %}
-                    <span class="badge badge-success">Certified</span>
-                {% endif %}
                 {% if tweet.sell_status %}
                     <span class="badge badge-secondary">Sold</span>
                 {% endif %}
+                {% if tweet.item_pic %}
+                    <span class="badge badge-info">Pictures</span>
+                {% endif %}
+
+
+
                 {{ tweet.item_name }}
             </h1>
 
@@ -38,8 +39,18 @@
                     </div>
                 </div>
             {% endif %}
-            <p class="lead"><b>${{ tweet.price }}</b></p>
-            <p class="h6 text-muted">{{ tweet.body }}</p>
+            <p class=" font-weight-light h2">
+                <b>${{ tweet.price }}</b></p>
+                    <br>
+
+            <p style="white-space: pre-wrap" class="h6 text-muted">{{ tweet.body }}</p>
+            {% if tweet.item_pic %}
+                <br>
+                {#                <img width=auto style="max-width:1000px" src="{{ url_for('static',filename='images/item_pic/' + tweet.item_pic) }}" alt="">#}
+                <img width=600
+                     src="{{ url_for('static',filename='images/item_pic/' + tweet.item_pic) }}" alt="">
+
+            {% endif %}
         </div>
     </main>
     {#</table>#}

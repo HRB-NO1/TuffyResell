@@ -149,21 +149,26 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     if form.validate_on_submit():
             current_user.about_me = form.about_me.data
-
-            pic_filename = form.profile_pic.data
-
-            if pic_filename:
+            if form.profile_pic.data:
+                if current_user.profile_pic:
+                    item_name = current_user.profile_pic
+                    delete_avatar(item_name)
+                print('niu')
                 current_user.profile_pic = request.files['profile_pic']
                 pic_filename = secure_filename(current_user.profile_pic.filename)
                 pic_name = str(uuid.uuid1()) + "_" + pic_filename
                 saver = request.files['profile_pic']
                 current_user.profile_pic = pic_name
-                saver.save(os.path.join(current_app.config['UPLOAD_FOLDER'], pic_name))
+                saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_AVATAR'], pic_name))
 
             db.session.commit()
             flash("Profile updated successfully!")
             return redirect(url_for('profile', username=current_user.username))
     return render_template('edit_profile.html', form=form)
+
+def delete_avatar(item_name):
+    os.remove(os.path.join(current_app.config['UPLOAD_FOLDER_AVATAR'], item_name))
+    return
 
 
 def reset_password_request():
@@ -245,7 +250,19 @@ def post(id):
 def post_item():
     form = TweetForm()
     if form.validate_on_submit():
-        t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
+
+        pic_filename = form.item_pic.data
+
+        if pic_filename:
+            form.item_pic = request.files['item_pic']
+            pic_filename = secure_filename(form.item_pic.filename)
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['item_pic']
+            form.item_pic = pic_name
+            saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], pic_name))
+            t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user, item_pic=pic_name)
+        else:
+            t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
         db.session.add(t)
         db.session.commit()
         flash("Item has been posted!")
@@ -261,20 +278,40 @@ def post_edit(username, id):
         t.item_name = form.item_name.data
         t.body = form.tweet.data
         t.price = form.price.data
+
+        pic_filename = form.item_pic.data
+        if pic_filename:
+            if t.item_pic:
+                delete_item_pic(t.item_pic)
+            t.item_pic = request.files['item_pic']
+            pic_filename = secure_filename(t.item_pic.filename)
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['item_pic']
+            t.item_pic = pic_name
+            saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], pic_name))
+
+
         db.session.add(t)
         db.session.commit()
         flash("Post has been updated")
-        return redirect(url_for('profile', username=current_user.username))
+        return redirect(url_for('post', id=id))
     form.item_name.data = t.item_name
     form.tweet.data = t.body
     form.price.data = t.price
-    return render_template("edit_post.html", form=form)
+    form.item_pic.data = t.item_pic
 
+    return render_template("edit_post.html", form=form, t=t)
+
+def delete_item_pic(item_name):
+    os.remove(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], item_name))
+    return
 
 @login_required
 def post_delete(username, id):
     t = Tweet.query.get_or_404(id)
     try:
+        if t.item_pic:
+            delete_item_pic(t.item_pic)
         db.session.delete(t)
         db.session.commit()
         flash("Item post was deleted.")
@@ -295,5 +332,3 @@ def post_mark_sold(username, id):
     except:
         flash("Oops! There is a prolem marking the item post.")
         return redirect(request.referrer)
-
-

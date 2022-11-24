@@ -39,8 +39,7 @@ class RegisterForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=120)])
-    profile_pic = FileField("Profile picture")
-
+    profile_pic = FileField("Upload avatar")
     submit = SubmitField('Save')
 
 
@@ -51,6 +50,8 @@ class TweetForm(FlaskForm):
                           , render_kw={"placeholder": ""})
     price = TextAreaField('Price', validators=[DataRequired(), Length(min=0, max=20)]
                           , render_kw={"placeholder": ""})
+    item_pic = FileField("Upload pictures")
+
 
 
 class PasswdResetRequestForm(FlaskForm):
