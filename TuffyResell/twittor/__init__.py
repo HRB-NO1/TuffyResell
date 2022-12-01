@@ -14,8 +14,7 @@ mail = Mail()
 
 from twittor.route import index, login, logout, register, user, page_not_found, \
     edit_profile, reset_password_request, password_reset, following, user_activate, post, post_item, post_edit, \
-    post_delete, post_mark_sold
-
+    post_delete, post_mark_sold, search
 
 def create_app():
     app = Flask(__name__)
@@ -52,4 +51,5 @@ def create_app():
     app.add_url_rule('/<username>/delete/<int:id>', 'post_delete', post_delete, methods=['GET', 'POST'])
     app.add_url_rule('/<username>/post_mark_sold/<int:id>', 'post_mark_sold', post_mark_sold, methods=['GET', 'POST'])
 
+    app.add_url_rule('/search', 'search', search)
     return app

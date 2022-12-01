@@ -10,7 +10,7 @@ class Config:
     UPLOAD_FOLDER_ITEM_PIC = 'twittor/static/images/item_pic'
 
     SECRET_KEY = 'abc123'
-    TWEET_PER_PAGE = 8
+    TWEET_PER_PAGE = 15
 
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@twittor.com')
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')

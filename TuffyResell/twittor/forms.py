@@ -39,6 +39,8 @@ class RegisterForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=120)])
+    email = TextAreaField('Email', validators=[DataRequired(), Email()])
+
     profile_pic = FileField("Upload avatar")
     submit = SubmitField('Save')
 
@@ -70,7 +72,4 @@ class PasswdResetForm(FlaskForm):
     password2 = PasswordField(
         "Password Repeat", validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
-
-
-
 

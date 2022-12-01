@@ -1,9 +1,4 @@
 <table class="table ">
-    <div class="custom-control custom-switch">
-        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-
-        <label class="custom-control-label" for="customSwitch1">Available item only</label>
-    </div>
 
     {% for tweet in tweets %}
         <tr valign="top">
@@ -46,21 +41,22 @@
                                 Delete</a>
                         </div>
                     {% endif %}
+
                 </h6>
 
 
-                    <p class=" font-weight-normal h5 text-muted ">${{ tweet.price }}
+                <p class=" font-weight-normal h5 text-muted ">${{ tweet.price }}
 
-            <br>
-                <h class="h6 font-weight-light">
-                    {% if tweet.body|length > 200 %}
-                        {{ tweet.body[:200] }}...
-                        {#              {{ tweet.body[:10] }}#}
-                    {% else %}
-                        {{ tweet.body }}
-                    {% endif %}
-                </h>
-                </div>
+                    <br>
+                    <h class="h6 font-weight-light">
+                        {% if tweet.body|length > 200 %}
+                            {{ tweet.body[:200] }}...
+                            {#              {{ tweet.body[:10] }}#}
+                        {% else %}
+                            {{ tweet.body }}
+                        {% endif %}
+                    </h>
+                    </div>
                 </p>
 
                 </p>
@@ -82,6 +78,5 @@
 
             </td>
         </tr>
-
     {% endfor %}
 </table>

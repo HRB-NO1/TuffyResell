@@ -3,6 +3,16 @@
 
 <head>
 
+    {#    <script>#}
+    {#        function check_box(checkboxElem) {#}
+    {#            if (checkboxElem.checked) {#}
+    {#                alert("checked")#}
+    {#            } else {#}
+    {#                alert("not checked")#}
+    {#            }#}
+    {#        }#}
+    {#    </script>#}
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +24,7 @@
     {% else %}
         <title>Welcome to TuffyResell</title>
     {% endif %}
+    </style>
 </head>
 <body style="background-color:#f3f8ff;">
 <div class="sticky-top d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -21,32 +32,32 @@
         TuffyResell
     </a>
 
+    {% if not current_user.is_anonymous %}
+        <form class="mx-auto form-inline" action="{{ url_for('search') }}" method="GET">
+            <input class="form-control mr-sm-2" type="text" placeholder="Site item search" name="keyword">
+            <button class=" bg-primary btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    {% endif %}
 
-{##}
-{#    <form class="mx-auto form-inline">#}
-{#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-{#      <button class=" bg-primary btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>#}
-{##}
-{##}
-{#    </form>#}
+    {% if not current_user.is_anonymous %}
 
+        <nav class="my-2 my-md-0 mr-md-3 ">
+            <a class="p-2 text-dark" href="{{ url_for('following') }}">Following</a>
+        </nav>
 
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{{ url_for('following') }}">Following User</a>
-    </nav>
+        <nav class="my-2 my-md-0 mr-md-3 ">
+            <a class="p-2 text-dark" href="/{{ current_user.username }}">Profile</a>
+        </nav>
 
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/{{ current_user.username }}">Profile</a>
-    </nav>
-
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{{ url_for('post_item') }}">Post Item</a>
-    </nav>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="btn btn-outline-primary" href="{{ url_for('post_item') }}">Post Item</a>
+        </nav>
+    {% endif %}
 
     {% if current_user.is_anonymous %}
-        <a class="btn btn-outline-primary" href="{{ url_for('login') }}">Login</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('login') }}">Login</a>
     {% else %}
-        <a class="btn btn-outline-primary" href="{{ url_for('logout') }}">Logout</a>
+        <a class="btn btn-outline-secondary" href="{{ url_for('logout') }}">Logout</a>
     {% endif %}
 </div>
 
@@ -66,3 +77,25 @@
     {% block content %} {% endblock %}
 </div>
 </body>
+
+<footer>
+    <div class="b-example-divider"></div>
+
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                    <svg class="bi" width="30" height="24">
+                        <use xlink:href="#bootstrap"/>
+                    </svg>
+                </a>
+                <span class="mb-3 mb-md-0 text-muted">&copy; TuffyResell 2022-2023</span>
+            </div>
+
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <a class="p-2 text-dark" href="https://github.com/HRB-NO1/TuffyResell" target="_blank">Github Source Code</a>
+
+            </ul>
+        </footer>
+    </div>
+</footer>

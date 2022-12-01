@@ -16,6 +16,10 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import *
+
+
 @login_required
 def index():
     page_num = int(request.args.get('page') or 1)
@@ -35,7 +39,7 @@ def login():
     if form.validate_on_submit():
         u = User.query.filter_by(username=form.username.data).first()
         if u is None or not u.check_password(form.password.data):
-            flash('invalid username or password')
+            flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(u, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -90,8 +94,12 @@ def user(username):
             current_user.unfollow(u)
             db.session.commit()
         else:
-            flash("Send an email to your email address, please check!!!!")
-            send_email_for_user_activate(current_user)
+            if "@fullerton.com" in u.email or "@csu.fullerton.edu" in u.email:
+                flash("Send an email to your email address, please check!!!!")
+                send_email_for_user_activate(current_user)
+            else:
+                flash("Only CSUF student or staff email can active their account")
+
     return render_template(
         'user.html',
         title='Profile',
@@ -147,24 +155,27 @@ def edit_profile():
     form = EditProfileForm()
     if request.method == 'GET':
         form.about_me.data = current_user.about_me
-    if form.validate_on_submit():
-            current_user.about_me = form.about_me.data
-            if form.profile_pic.data:
-                if current_user.profile_pic:
-                    item_name = current_user.profile_pic
-                    delete_avatar(item_name)
-                print('niu')
-                current_user.profile_pic = request.files['profile_pic']
-                pic_filename = secure_filename(current_user.profile_pic.filename)
-                pic_name = str(uuid.uuid1()) + "_" + pic_filename
-                saver = request.files['profile_pic']
-                current_user.profile_pic = pic_name
-                saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_AVATAR'], pic_name))
+        form.email.data = current_user.email
 
-            db.session.commit()
-            flash("Profile updated successfully!")
-            return redirect(url_for('profile', username=current_user.username))
+    if form.validate_on_submit():
+        current_user.about_me = form.about_me.data
+        current_user.email = form.email.data
+        if form.profile_pic.data:
+            if current_user.profile_pic:
+                item_name = current_user.profile_pic
+                delete_avatar(item_name)
+            current_user.profile_pic = request.files['profile_pic']
+            pic_filename = secure_filename(current_user.profile_pic.filename)
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['profile_pic']
+            current_user.profile_pic = pic_name
+            saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_AVATAR'], pic_name))
+
+        db.session.commit()
+        flash("Profile updated successfully!")
+        return redirect(url_for('profile', username=current_user.username, email=current_user.email))
     return render_template('edit_profile.html', form=form)
+
 
 def delete_avatar(item_name):
     os.remove(os.path.join(current_app.config['UPLOAD_FOLDER_AVATAR'], item_name))
@@ -260,7 +271,8 @@ def post_item():
             saver = request.files['item_pic']
             form.item_pic = pic_name
             saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], pic_name))
-            t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user, item_pic=pic_name)
+            t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user,
+                      item_pic=pic_name)
         else:
             t = Tweet(body=form.tweet.data, item_name=form.item_name.data, price=form.price.data, author=current_user)
         db.session.add(t)
@@ -290,7 +302,6 @@ def post_edit(username, id):
             t.item_pic = pic_name
             saver.save(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], pic_name))
 
-
         db.session.add(t)
         db.session.commit()
         flash("Post has been updated")
@@ -302,9 +313,11 @@ def post_edit(username, id):
 
     return render_template("edit_post.html", form=form, t=t)
 
+
 def delete_item_pic(item_name):
     os.remove(os.path.join(current_app.config['UPLOAD_FOLDER_ITEM_PIC'], item_name))
     return
+
 
 @login_required
 def post_delete(username, id):
@@ -332,3 +345,30 @@ def post_mark_sold(username, id):
     except:
         flash("Oops! There is a prolem marking the item post.")
         return redirect(request.referrer)
+
+
+@login_required
+def search():
+    keyword = request.args.get('keyword')
+    page_num = int(request.args.get('page') or 1)
+    # tweets = Tweet.query.filter(or_(Tweet.item_name.contains(keyword),
+    #                                 Tweet.body.contains(keyword))).order_by(Tweet.create_time.desc())
+    # tweets = tweets.all()
+
+    tweets = Tweet.query.filter(or_(Tweet.item_name.contains(keyword),
+                                    Tweet.body.contains(keyword))).order_by(Tweet.create_time.desc()).all()
+    # tweets = tweets.order_by(Tweet.create_time.desc()).paginate(
+    #     page=page_num, per_page=current_app.config['TWEET_PER_PAGE'], error_out=False)
+    # next_url = url_for('index', page=tweets.next_num) if tweets.has_next else None
+    # prev_url = url_for('index', page=tweets.prev_num) if tweets.has_prev else None
+
+    if tweets:
+        # return render_template('index.html', tweets=tweets.items, next_url=next_url, prev_url=prev_url)
+        tweets_len = len(tweets)
+        flash('Found ' + str(tweets_len) + ' result(s)')
+        return render_template('index.html', tweets=tweets)
+
+    else:
+        flash('No post found')
+        return redirect(url_for('index'))
+
