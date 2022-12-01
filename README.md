@@ -1,15 +1,15 @@
-Ver 0.1: Create account, Log in, Log out, Follow other users(sqlite3)
-Ver 0.2: Edit profile, show Follower and Following on the user page
-Ver 0.3: Post item
-Ver 0.4: Show Following users’ post
-Ver 0.5: Manage post(edit, delete, mark as sold)
-Ver 0.6: SMTP service, active account and Forget password email method
-Ver 0.7: Add colorful tag on index page
-Ver 0.8: Upload avatar and upload item image
-Ver 0.9: Search function
-Ver 1.0: email filter that only CSUF email can active the account, edit_profile page added email change method
-Ver 2.0: Bug Fix
-Ver 2.1: Bug Fix
+Ver 0.1: Create account, Log in, Log out, Follow other users(sqlite3)  
+Ver 0.2: Edit profile, show Follower and Following on the user page  
+Ver 0.3: Post item  
+Ver 0.4: Show Following users’ post  
+Ver 0.5: Manage post(edit, delete, mark as sold)  
+Ver 0.6: SMTP service, active account and Forget password email method  
+Ver 0.7: Add colorful tag on index page  
+Ver 0.8: Upload avatar and upload item image  
+Ver 0.9: Search function  
+Ver 1.0: email filter that only CSUF email can active the account, edit_profile page added email change method  
+Ver 2.0: Bug Fix  
+Ver 2.1: Bug Fix  
 
 database:  
 ![image](https://user-images.githubusercontent.com/54606160/205164917-ccf0cc43-3464-49a3-a55e-7626417cdb69.png)    
