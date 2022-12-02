@@ -10,6 +10,7 @@ Ver 0.9: Search function
 Ver 1.0: email filter that only CSUF email can active the account, edit_profile page added email change method  
 Ver 2.0: Bug Fix  
 Ver 2.1: Bug Fix  
+Ver 2.2: Bug Fix  
 
 database:  
 ![image](https://user-images.githubusercontent.com/54606160/205164917-ccf0cc43-3464-49a3-a55e-7626417cdb69.png)    
