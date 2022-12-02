@@ -47,8 +47,9 @@
             {% if tweet.item_pic %}
                 <br>
                 {#                <img width=auto style="max-width:1000px" src="{{ url_for('static',filename='images/item_pic/' + tweet.item_pic) }}" alt="">#}
-                <img width=600
-                     src="{{ url_for('static',filename='images/item_pic/' + tweet.item_pic) }}" alt="">
+                <img width=auto style="max-width:600px" src="{{ url_for('static',filename='images/item_pic/' + tweet.item_pic) }}" alt="">
+{#                <img width=600 #}
+{#                     src="{{ url_for('static',filename='images/' + tweet.item_pic) }}" alt="">#}
 
             {% endif %}
         </div>

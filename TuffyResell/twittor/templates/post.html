@@ -6,7 +6,7 @@
         {% if not tweet.author.profile_pic %}
             <td><img src="{{ tweet.author.avatar(70) }}" alt=""></td>
         {% else %}
-            <td><img src="{{ url_for('static',filename='images/' + tweet.author.profile_pic) }}" width="75" alt=""></td>
+            <td><img src="{{ url_for('static',filename='images/avatar/' + tweet.author.profile_pic) }}" width="75" alt=""></td>
         {% endif %}
 
         <a href="{{ url_for('profile', username=tweet.author.username) }}">{{ tweet.author.username }}</a>
