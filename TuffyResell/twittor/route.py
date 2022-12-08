@@ -355,7 +355,7 @@ def search():
     #                                 Tweet.body.contains(keyword))).order_by(Tweet.create_time.desc())
     # tweets = tweets.all()
 
-    tweets = Tweet.query.filter(or_(Tweet.item_name.contains(keyword),
+    tweets = Tweet.query.filter(or_(Tweet.price.contains(keyword),Tweet.item_name.contains(keyword),
                                     Tweet.body.contains(keyword))).order_by(Tweet.create_time.desc()).all()
     # tweets = tweets.order_by(Tweet.create_time.desc()).paginate(
     #     page=page_num, per_page=current_app.config['TWEET_PER_PAGE'], error_out=False)
